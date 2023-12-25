@@ -1,0 +1,96 @@
+baseURL: https://polidoro.dev/
+theme: "PaperMod"
+paginate: 10
+
+enableInlineShortcodes: true
+enableRobotsTXT: true
+buildDrafts: false
+buildFuture: false
+buildExpired: false
+enableEmoji: true
+pygmentsUseClasses: true
+mainsections: ["posts", "papermod"]
+defaultContentLanguage: en
+
+minify:
+  disableXML: true
+  minifyOutput: true
+
+languages:
+  en:
+    languageName: "English"
+    title: Polidoro.dev
+    weight: 1
+    taxonomies:
+      category: categories
+      tag: tags
+      series: series
+    menu:
+      main:
+        - name: Posts
+          url: posts
+          weight: 5
+        - name: Search
+          url: search/
+          weight: 10
+        - name: Tags
+          url: tags/
+          weight: 10
+  pt-BR:
+    languageName: "Português"
+    title: Polidoro.dev
+    weight: 2
+    taxonomies:
+      category: categoria
+      tag: tags
+      series: series
+    menu:
+      main:
+        - name: Posts
+          url: posts
+          weight: 5
+        - name: Buscar
+          url: buscar/
+          weight: 10
+        - name: Tags
+          url: tags/
+          weight: 10
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
+params:
+  env: production # to enable google analytics, opengraph, twitter-cards and schema.
+  author: João Polidoro
+  description: "Blog about technology"
+  defaultTheme: auto
+  disableThemeToggle: false
+  ShowShareButtons: true
+  ShowReadingTime: true
+  # disableSpecial1stPost: true
+  displayFullLangName: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowRssButtonInSectionTermList: true
+  ShowAllPagesInArchive: true
+  ShowPageNums: true
+  ShowToc: true
+  # comments: true
+  hideFooter: true
+  # images: ["images/papermod-cover.png"]
+
+  homeInfoParams:
+    Title: My name is Polidoro
+    Content: I'm a software developer, enthusiastic in learning new things as self-taught
+
+  socialIcons:
+    - name: github
+      title: View Source on Github
+      url: "https://github.com/Polidoro-root"
+    - name: linkedin
+      title: Check in LinkedIn
+      url: "https://www.linkedin.com/in/jo%C3%A3o-polidoro-a34129191"
