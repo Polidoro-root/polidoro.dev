@@ -25,6 +25,9 @@ languages:
       category: categories
       tag: tags
       series: series
+    homeInfoParams:
+      Title: I am João Polidoro
+      Content: Software developer, enthusiastic in learning new things as self-taught
     menu:
       main:
         - name: Posts
@@ -44,6 +47,9 @@ languages:
       category: categoria
       tag: tags
       series: series
+    homeInfoParams:
+      Title: Eu sou João Polidoro
+      Content: Desenvolvedor de software
     menu:
       main:
         - name: Posts
@@ -61,6 +67,10 @@ outputs:
     - HTML
     - RSS
     - JSON
+
+services:
+  googleAnalytics:
+    ID: G-7HH509WDYK
 
 params:
   env: production # to enable google analytics, opengraph, twitter-cards and schema.
@@ -83,9 +93,9 @@ params:
   hideFooter: true
   # images: ["images/papermod-cover.png"]
 
-  homeInfoParams:
-    Title: My name is Polidoro
-    Content: I'm a software developer, enthusiastic in learning new things as self-taught
+  # homeInfoParams:
+  #   Title: My name is Polidoro
+  #   Content: I'm a software developer, enthusiastic in learning new things as self-taught
 
   socialIcons:
     - name: github
