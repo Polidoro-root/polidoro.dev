@@ -25,9 +25,6 @@ languages:
       category: categories
       tag: tags
       series: series
-    homeInfoParams:
-      Title: I am João Polidoro
-      Content: Software developer, enthusiastic in learning new things as self-taught
     menu:
       main:
         - name: Posts
@@ -39,6 +36,11 @@ languages:
         - name: Tags
           url: tags/
           weight: 10
+    params:
+      homeInfoParams:
+        Title: I am João Polidoro
+        Content: Software developer, enthusiastic in learning new things as self-taught
+
   pt-BR:
     languageName: "Português"
     title: Polidoro.dev
@@ -47,9 +49,6 @@ languages:
       category: categoria
       tag: tags
       series: series
-    homeInfoParams:
-      Title: Eu sou João Polidoro
-      Content: Desenvolvedor de software
     menu:
       main:
         - name: Posts
@@ -61,6 +60,10 @@ languages:
         - name: Tags
           url: tags/
           weight: 10
+    params:
+      homeInfoParams:
+        Title: Eu sou João Polidoro
+        Content: Desenvolvedor de software
 
 outputs:
   home:
@@ -97,6 +100,8 @@ params:
   #   Title: My name is Polidoro
   #   Content: I'm a software developer, enthusiastic in learning new things as self-taught
 
+  ShareButtons:
+    ["linkedin", "x", "discord", "reddit", "instagram", "whatsapp", "facebook"]
   socialIcons:
     - name: github
       title: View Source on Github
