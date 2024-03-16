@@ -39,7 +39,7 @@ languages:
     params:
       homeInfoParams:
         Title: I am João Polidoro
-        Content: Software developer, enthusiastic in learning new things as self-taught
+        Content: Software developer, always learning new things for fun and work
 
   pt-BR:
     languageName: "Português"
@@ -96,10 +96,6 @@ params:
   hideFooter: true
   # images: ["images/papermod-cover.png"]
 
-  # homeInfoParams:
-  #   Title: My name is Polidoro
-  #   Content: I'm a software developer, enthusiastic in learning new things as self-taught
-
   ShareButtons:
     ["linkedin", "x", "discord", "reddit", "instagram", "whatsapp", "facebook"]
   socialIcons:
@@ -108,4 +104,4 @@ params:
       url: "https://github.com/Polidoro-root"
     - name: linkedin
       title: Check in LinkedIn
-      url: "https://www.linkedin.com/in/jo%C3%A3o-polidoro-a34129191"
+      url: "https://www.linkedin.com/in/joao-polidoro"
