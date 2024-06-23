@@ -2,8 +2,8 @@
 title: "Home Network"
 url: "/home-network"
 date: 2024-04-07
-tags: ["networking", "dns", "cloudflared", "docker", "pihole", "ansible", "linux", "debian", "prometheus", "grafana", "heimdall", "bitwarden"]
-draft: true
+tags: ["networking", "dns", "firewall", "cloudflared", "docker", "pihole", "ansible", "linux", "debian", "heimdall"]
+draft: false
 ---
 
 Recently I had to change some parameters on my LAN setup, so I decided to document
@@ -12,8 +12,10 @@ aren't required for fastest network but for better privacy.
 
 Let's be honest who likes to see popups, banners and ads in every site that we use?
 Because of that I'm always used extensions for browser like
-[AdBlocker Ultimate](https://firefox.com), [Privacy Badger](https://firefox.com),
-[Don't track me Google](https://firefox.com) and [uBlock origin](https://firefox.com).
+[AdBlocker Ultimate](https://addons.mozilla.org/en-US/firefox/addon/adblocker-ultimate),
+[Privacy Badger](https://addons.mozilla.org/en-US/firefox/addon/privacy-badger17/),
+[Don't track me Google](https://addons.mozilla.org/en-US/firefox/addon/dont-track-me-google1/)
+and [uBlock origin](https://addons.mozilla.org/en-US/firefox/addon/ublock-origin/).
 And it was okay for just desktop browsering with Ad blocking, then I realized that
 most of ads that I was receiving was in my Android phone (Xiaomi Redmi Note 9s, then
 Samsumg S21 FE) and there is no "ad blocker" for a whole Operating System neither
@@ -23,8 +25,9 @@ At the moment I was already confortable with network concepts like DNS, Firewall
 HTTP, servers and linux to work as Web Developer, deploying applications on managed
 clouds and setting up public and private networks. Fortunately, youtube channels
 that I was following (and follow yet) published contents about "Ads Protected Home
-Network" like [Diolinux](https://youtube.com), [Fabio Akita](https://youtube.com)
-and [Slackjeff](https://youtube.com). So I decided to see what they're talking about.
+Network" like [Diolinux](https://www.youtube.com/@Diolinux),
+[Fabio Akita](https://www.youtube.com/@Akitando) and
+[Slackjeff](https://www.youtube.com/@SlackJeff). So I decided to see what they're talking about.
 
 ## Setup
 
@@ -41,14 +44,11 @@ apt and network out-of-the-box.
 Through this post we'll install and setup:
 
 - [SSH](https://www.cloudflare.com/learning/access-management/what-is-ssh/)
-- [Docker](https://www.docker.com/)
 - [Ansible](https://www.ansible.com/)
-- [PiHole](https://pi-hole.net/)
+- [Docker](https://docker.com/)
 - [Cloudflared](https://github.com/cloudflare/cloudflared)
-- [Prometheus](https://prometheus.io/)
-- [Grafana](https://grafana.com/)
+- [PiHole](https://pi-hole.net/)
 - [Heimdall](https://github.com/linuxserver/Heimdall)
-- [Bitwarden](https://bitwarden.com/)
 
 The only thing that we'll need to setup manually is SSH, because every other
 program will be automated through Ansible.
@@ -158,34 +158,196 @@ cd roles
 
 ansible-galaxy init docker
 ansible-galaxy init pihole
+ansible-galaxy init firewall
 ansible-galaxy init cloudflared
-ansible-galaxy init prometheus
-ansible-galaxy init grafana
 ansible-galaxy init heimdall
-ansible-galaxy init bitwarden
 ```
+
+## Firewall
+
+As we'll make it a DNS server, for security it's recommended that we allow just the
+necessary ports for communication.
+
+In this case, we'll install `ufw` package and enable ssh, http/https and dns ports
+only.
+
+We'll setup Firewall `roles/firewall/tasks/main.yaml` with:
+
+> Note that ssh port is not the default 22 and does not accept any host, that because
+we want to reduce the possible connections to the server through ssh
+
+```yaml
+---
+- name: install firewall
+  apt:
+    name:
+      - ufw
+    state: present
+    update_cache: yes
+
+
+- name: enable ssh port
+  community.general.ufw:
+    rule: allow
+    port: "{{ ufw_ssh_port }}"
+    proto: tcp
+    direction: in
+    from_ip: "{{ ufw_ssh_from_ip }}"
+    state: enabled
+    to_ip: "{{ ufw_ssh_to_ip }}"
+
+- name: enable http port
+  community.general.ufw:
+    rule: allow
+    port: 80
+    proto: tcp
+
+- name: enable https port
+  community.general.ufw:
+    rule: allow
+    port: 443
+    proto: tcp
+
+- name: enable dns tcp port
+  community.general.ufw:
+    rule: allow
+    port: 53
+    proto: tcp
+
+- name: enable dns udp port
+  community.general.ufw:
+    rule: allow
+    port: 53
+    proto: udp
+
+- name: enable ipv6 range rule
+  community.general.ufw:
+    rule: allow
+    port: 546:547
+    proto: udp
+
+- name: enable firewall
+  community.general.ufw:
+    state: enabled
+
+```
+
+## Docker
+
+To isolate each application environments, we'll use Docker containers instead
+of running on bare metal.
+
+With the directory `roles/docker` created by ansible-galaxy, we'll setup Docker
+in `roles/docker/tasks/main.yaml` with:
+
+```yaml
+---
+- name: install libs
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+      - python3-pip
+      - virtualenv
+      - python3-setuptools
+      - python3-jsondiff
+      - python3-requests
+    state: present
+    update_cache: yes
+
+- name: install docker gpg key
+  apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    state: present
+
+- name: Add docker repository
+  apt_repository:
+    repo: deb https://download.docker.com/linux/debian "{{ ansible_distribution_release }}" stable
+    state: present
+
+- name: install docker
+  apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: present
+
+- name: setup docker user and group
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    state: present
+    groups: docker
+    append: true
+
+```
+
+## Cloudflared
+
+We could use any service that give us DoH (DNS over HTTPS), in this case I chose
+Cloudflared because I have previous experience in managing it. But it could be
+Unbound for example.
+
+We'll setup Cloudflared in `roles/cloudflared/tasks/main.yaml` with:
+
+```yaml
+---
+- name: run cloudflared container
+  docker_container:
+    name: cloudflared
+    state: started
+    image: docker.io/cloudflare/cloudflared:latest
+    command: proxy-dns
+    network_mode: host
+    env:
+      TUNNEL_DNS_UPSTREAM: "https://1.1.1.1/dns-query,https://1.0.0.1/dns-query"
+      TUNNEL_DNS_PORT: "5053"
+      TUNNEL_DNS_ADDRESS: "0.0.0.0"
+      TUNNEL_METRICS: "{{ cloudflared_metrics }}"
+    restart_policy: unless-stopped
+```
+
+Using `network_mode: host` means that we don't have to deal with NAT and port
+forwarding, in this configuration we are telling to `cloudflared` to listen DNS
+requests on port 5053 and redirect them to nameservers 1.1.1.1 or 1.0.0.1 from
+Cloudflare, applying DoH.
 
 ## PiHole
 
 PiHole works as DNS (Domain Name Server) middleware for our network with the purpose
-to encrypt the plain text data sent by our devices to the intertet via our ISP
-(Internet Service Provider). Before delving into PiHole's functionalities, first
-we need to know what is DNS supposed to do.
+to encrypt the plain text data sent by our devices to the internet via our ISP
+(Internet Service Provider).
 
-### DNS
+We'll setup PiHole in `roles/pihole/tasks/main.yaml` with:
 
-When we are browsering on internet and accessing sites such as [Context: https://google.com.br]
-or [Context: https://www.youtube.com], for us humans who speak Brazilian Portuguese
-or English it's common to recognize products and companies name written in ASCII
-characters in UTF-8, so we can relate these web sites easily each time we need to.
-But that is not true for computers.
+```yaml
+---
+- name: run pihole docker container
+  docker_container:
+    state: started
+    name: pihole
+    image: docker.io/pihole/pihole:latest
+    network_mode: host
+    env:
+      DNSMASQ_USER: pihole
+      TZ: America/Sao_Paulo
+      PIHOLE_DNS_: 127.0.0.1#5053
+      WEBTHEME: default-darker
+      WEBPASSWORD: "{{ pihole_webpassword }}"
+      WEB_PORT: "{{ pihole_webport }}"
+    volumes:
+      - "/home/{{ ansible_user }}/pihole:/etc/pihole"
+      - "/home/{{ ansible_user }}/etc-dnsmasq.d:/etc/dnsmasq.d"
+    restart_policy: unless-stopped
+```
 
-As we know nowadays computers are [Turing's Universal Discrete Machines](https://google.com)
-that can fit data and instructions in eletric circuits using the [Von Neumann Architecture](https://google.com)
-that combines CPU, Main Memory, I/O devices and buses. Computers will only manipulate
-data in [binary numerical ...](https://google.com).
-So how can we type "Youtube" on Google's search bar and receive a list of sites to
-access like youtube.com.br, youtube.com or youtube.com.fr? You can see it visually in
-[video](https://youtube.com).
+This container also is running on `network_mode: host`, so the ports 53/udp,
+53/tcp, 546/udp, 547/udp and the one choosen for `pihole_webport` will be
+available on host.
 
-
+## Heimdall
