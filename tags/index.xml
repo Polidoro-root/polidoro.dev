@@ -6,8 +6,78 @@
     <description>Recent content in Tags on Polidoro.dev</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 11 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 07 Apr 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://polidoro.dev/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ansible</title>
+      <link>https://polidoro.dev/tags/ansible/</link>
+      <pubDate>Sun, 07 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://polidoro.dev/tags/ansible/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Cloudflared</title>
+      <link>https://polidoro.dev/tags/cloudflared/</link>
+      <pubDate>Sun, 07 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://polidoro.dev/tags/cloudflared/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Debian</title>
+      <link>https://polidoro.dev/tags/debian/</link>
+      <pubDate>Sun, 07 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://polidoro.dev/tags/debian/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Dns</title>
+      <link>https://polidoro.dev/tags/dns/</link>
+      <pubDate>Sun, 07 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://polidoro.dev/tags/dns/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Docker</title>
+      <link>https://polidoro.dev/tags/docker/</link>
+      <pubDate>Sun, 07 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://polidoro.dev/tags/docker/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Firewall</title>
+      <link>https://polidoro.dev/tags/firewall/</link>
+      <pubDate>Sun, 07 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://polidoro.dev/tags/firewall/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Heimdall</title>
+      <link>https://polidoro.dev/tags/heimdall/</link>
+      <pubDate>Sun, 07 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://polidoro.dev/tags/heimdall/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Linux</title>
+      <link>https://polidoro.dev/tags/linux/</link>
+      <pubDate>Sun, 07 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://polidoro.dev/tags/linux/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Networking</title>
+      <link>https://polidoro.dev/tags/networking/</link>
+      <pubDate>Sun, 07 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://polidoro.dev/tags/networking/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Pihole</title>
+      <link>https://polidoro.dev/tags/pihole/</link>
+      <pubDate>Sun, 07 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://polidoro.dev/tags/pihole/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Influences</title>
       <link>https://polidoro.dev/tags/influences/</link>

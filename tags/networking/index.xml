@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Polidoro.dev</title>
-    <link>https://polidoro.dev/</link>
-    <description>Recent content on Polidoro.dev</description>
+    <title>Networking on Polidoro.dev</title>
+    <link>https://polidoro.dev/tags/networking/</link>
+    <description>Recent content in Networking on Polidoro.dev</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Sun, 07 Apr 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://polidoro.dev/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://polidoro.dev/tags/networking/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Home Network</title>
       <link>https://polidoro.dev/home-network/</link>
@@ -15,14 +15,6 @@
       <guid>https://polidoro.dev/home-network/</guid>
       <description>Recently I had to change some parameters on my LAN setup, so I decided to document here the process and tools that I used and explain why I&amp;rsquo;m doing this things that aren&amp;rsquo;t required for fastest network but for better privacy.
 Let&amp;rsquo;s be honest who likes to see popups, banners and ads in every site that we use? Because of that I&amp;rsquo;m always used extensions for browser like AdBlocker Ultimate, Privacy Badger, Don&amp;rsquo;t track me Google and uBlock origin.</description>
-    </item>
-    <item>
-      <title>Hello World!</title>
-      <link>https://polidoro.dev/hello-world/</link>
-      <pubDate>Mon, 11 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>https://polidoro.dev/hello-world/</guid>
-      <description>Today I&amp;rsquo;m releasing my first blog and as every programmer the first thing that we do in unknown lands is the classic &amp;ldquo;Hello World&amp;rdquo;. So, here it is!
-The main goal of this blog is to keep on track my experiences and self development as tech professional. To create this blog I got inspired by many brazilian developers that I have followed since I started my career, the most notable ones are Wesley Willians, Fabio Akita and Elton Minetto, but there are a lot more from Brazil and outside.</description>
     </item>
   </channel>
 </rss>
