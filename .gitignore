@@ -1,1 +1,5 @@
 /public
+.env*
+.terraform
+*.tfstate
+*.terraform.lock.hcl
