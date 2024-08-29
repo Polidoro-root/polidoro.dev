@@ -10,5 +10,5 @@ variable "profile" {
 
 variable "apex_domain" {
 	type = string
-	default = ""
+	default = "polidoro.dev"
 }

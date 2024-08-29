@@ -1,16 +1,15 @@
+resource aws_cloudfront_origin_access_control oac {
+  name = "polidoro.dev"
+  origin_access_control_origin_type = "s3"
+  signing_behavior = "always"
+  signing_protocol = "sigv4"
+}
+
 resource aws_cloudfront_distribution distribution {
   origin {
-    # https://stackoverflow.com/a/41132075
-    domain_name = aws_s3_bucket.bucket.website_endpoint
-    origin_id   = aws_s3_bucket.bucket.website_endpoint
-
-    # https://stackoverflow.com/a/55042824
-    custom_origin_config {
-      http_port              = 80
-      https_port             = 443
-      origin_protocol_policy = "http-only"
-      origin_ssl_protocols   = ["TLSv1", "TLSv1.1", "TLSv1.2"]
-    }
+    domain_name = aws_s3_bucket.bucket.bucket_regional_domain_name
+    origin_access_control_id = aws_cloudfront_origin_access_control.oac.id
+    origin_id   = aws_s3_bucket.bucket.bucket_regional_domain_name
   }
 
   enabled             = true
@@ -23,7 +22,7 @@ resource aws_cloudfront_distribution distribution {
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = aws_s3_bucket.bucket.website_endpoint
+    target_origin_id = aws_s3_bucket.bucket.bucket_regional_domain_name
     compress         = true
 
     forwarded_values {
