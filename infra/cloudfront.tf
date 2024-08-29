@@ -1,5 +1,5 @@
 resource aws_cloudfront_origin_access_control oac {
-  name = "polidoro.dev"
+  name = var.apex_domain
   origin_access_control_origin_type = "s3"
   signing_behavior = "always"
   signing_protocol = "sigv4"
@@ -17,7 +17,7 @@ resource aws_cloudfront_distribution distribution {
   comment             = ""
   default_root_object = "index.html"
 
-  aliases = ["www.${var.apex_domain}"]
+  aliases = [var.apex_domain]
 
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
@@ -35,8 +35,8 @@ resource aws_cloudfront_distribution distribution {
 
     viewer_protocol_policy = "redirect-to-https"
     min_ttl                = 0
-    default_ttl            = 86400
-    max_ttl                = 31536000
+    default_ttl            = 14400
+    max_ttl                = 14400
   }
 
   viewer_certificate {
