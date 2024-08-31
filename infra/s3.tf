@@ -13,22 +13,22 @@ resource "aws_s3_bucket_public_access_block" "pab" {
 }
 
 resource "aws_s3_bucket_website_configuration" "this" {
-	bucket = aws_s3_bucket.bucket.id
+  bucket = aws_s3_bucket.bucket.id
 
-	index_document {
-		suffix = "index.html"
-	}
+  index_document {
+    suffix = "index.html"
+  }
 
-	error_document {
-		key = "404.html"
-	}
+  error_document {
+    key = "404.html"
+  }
 }
 
 data aws_iam_policy_document policy {
 	statement {
 		principals {
-			type = "*"
-			identifiers = ["*"]
+		      type        = "AWS"
+		      identifiers = [aws_cloudfront_origin_access_identity.oai.iam_arn]
 		}
 	effect = "Allow"
 	actions   = ["s3:GetObject"]

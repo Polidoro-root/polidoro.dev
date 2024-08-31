@@ -1,28 +1,27 @@
-resource aws_cloudfront_origin_access_control oac {
-  name = var.apex_domain
-  origin_access_control_origin_type = "s3"
-  signing_behavior = "always"
-  signing_protocol = "sigv4"
+resource "aws_cloudfront_origin_access_identity" "oai" {
 }
 
 resource aws_cloudfront_distribution distribution {
   origin {
     domain_name = aws_s3_bucket.bucket.bucket_regional_domain_name
-    origin_access_control_id = aws_cloudfront_origin_access_control.oac.id
-    origin_id   = aws_s3_bucket.bucket.bucket_regional_domain_name
+    origin_id   = "${var.apex_domain}.s3-website-${var.region}.amazonaws.com"
+
+	s3_origin_config {
+		origin_access_identity = aws_cloudfront_origin_access_identity.oai.cloudfront_access_identity_path
+	}
+
   }
 
   enabled             = true
   is_ipv6_enabled     = true
-  comment             = ""
+ 
   default_root_object = "index.html"
-
   aliases = [var.apex_domain]
 
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = aws_s3_bucket.bucket.bucket_regional_domain_name
+    target_origin_id =  "${var.apex_domain}.s3-website-${var.region}.amazonaws.com"
     compress         = true
 
     forwarded_values {
@@ -51,3 +50,26 @@ resource aws_cloudfront_distribution distribution {
     }
   }
 }
+
+resource "aws_cloudfront_function" "redirect" {
+  name    = "redirect-to-index"
+  runtime = "cloudfront-js-2.0"
+  publish = true
+  code    = <<EOF
+	async function handler(event) {
+	    const request = event.request;
+	    const uri = request.uri;
+	    
+	    // Check whether the URI is missing a file name.
+	    if (uri.endsWith('/')) {
+		request.uri += 'index.html';
+	    } 
+	    // Check whether the URI is missing a file extension.
+	    else if (!uri.includes('.')) {
+		request.uri += '/index.html';
+	    }
+
+	    return request;
+	}
+  EOF
+  }
